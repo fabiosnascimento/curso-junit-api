@@ -10,7 +10,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class UserSys {
+@Table(name = "`user`")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

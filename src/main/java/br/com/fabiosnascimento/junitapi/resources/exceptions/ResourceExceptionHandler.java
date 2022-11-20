@@ -1,5 +1,6 @@
 package br.com.fabiosnascimento.junitapi.resources.exceptions;
 
+import br.com.fabiosnascimento.junitapi.services.exceptions.DataIntegrityViolationException;
 import br.com.fabiosnascimento.junitapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,4 +21,13 @@ public class ResourceExceptionHandler {
                                                 req.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<StandardError>dataIntegrityViolationException(DataIntegrityViolationException ex, HttpServletRequest req) {
+        StandardError error = new StandardError(LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                req.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
 }

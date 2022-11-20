@@ -1,7 +1,7 @@
 package br.com.fabiosnascimento.junitapi.config;
 
-import br.com.fabiosnascimento.junitapi.domain.UserSys;
-import br.com.fabiosnascimento.junitapi.repositories.UserSysRepository;
+import br.com.fabiosnascimento.junitapi.domain.User;
+import br.com.fabiosnascimento.junitapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +14,13 @@ import java.util.List;
 public class LocalConfig {
 
     @Autowired
-    private UserSysRepository userSysRepository;
+    private UserRepository userRepository;
 
     @Bean
     public void startDB() {
-        UserSys u1 = new UserSys(null, "Fabio", "fabio@mail.com", "123");
-        UserSys u2 = new UserSys(null, "Luiz", "luiz@mail.com", "123");
+        User u1 = new User(null, "Fabio", "fabio@mail.com", "123");
+        User u2 = new User(null, "Luiz", "luiz@mail.com", "123");
 
-        userSysRepository.saveAll(List.of(u1, u2));
+        userRepository.saveAll(List.of(u1, u2));
     }
 }
