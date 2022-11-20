@@ -1,5 +1,6 @@
 package br.com.fabiosnascimento.junitapi.resources;
 
+import br.com.fabiosnascimento.junitapi.domain.User;
 import br.com.fabiosnascimento.junitapi.domain.dto.UserDTO;
 import br.com.fabiosnascimento.junitapi.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -38,6 +39,12 @@ public class UserResource {
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}").buildAndExpand(userService.create(obj).getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO obj) {
+        obj.setId(id);
+        return ResponseEntity.ok().body(mapper.map(userService.update(obj), UserDTO.class));
     }
 
 }
