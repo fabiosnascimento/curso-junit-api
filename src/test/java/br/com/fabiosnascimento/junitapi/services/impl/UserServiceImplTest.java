@@ -3,6 +3,7 @@ package br.com.fabiosnascimento.junitapi.services.impl;
 import br.com.fabiosnascimento.junitapi.domain.User;
 import br.com.fabiosnascimento.junitapi.domain.dto.UserDTO;
 import br.com.fabiosnascimento.junitapi.repositories.UserRepository;
+import br.com.fabiosnascimento.junitapi.services.exceptions.DataIntegrityViolationException;
 import br.com.fabiosnascimento.junitapi.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,7 +93,32 @@ class UserServiceImplTest {
     }
 
     @Test
-    void create() {
+    void whenCreateThenReturnSuccess() {
+        when(userRepository.save(any())).thenReturn(user);
+
+        User response = service.create(userDTO);
+
+        assertNotNull(response);
+
+        assertEquals(User.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NAME, response.getName());
+        assertEquals(EMAIL, response.getEmail());
+        assertEquals(PASSWORD, response.getPassword());
+
+    }
+
+    @Test
+    void whenCreateThenReturnDataIntegrityViolationException() {
+        when(userRepository.findByEmail(anyString())).thenReturn(optionalUser);
+
+        try {
+            optionalUser.get().setId(2);
+            service.create(userDTO);
+        } catch (Exception ex) {
+            assertEquals(DataIntegrityViolationException.class, ex.getClass());
+            assertEquals("E-mail já cadastrado no sistema", ex.getMessage());
+        }
     }
 
     @Test
